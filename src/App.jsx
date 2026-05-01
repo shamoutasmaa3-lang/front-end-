@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
-import Home from "./Home";
+ import Home from "./Home";
 import Categories from "./Categories";
+import Profile from "./Profile";
 import Cart from "./Cart";
 import Safe from "./Safe";
 import NoSafe from "./NoSafe";
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<Profile />} />
 
          <Route path="/categories" element={<Categories />} /> 
         <Route path="/cart" element={<Cart />} />

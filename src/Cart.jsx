@@ -1,36 +1,60 @@
+import SideBar from "./components/SideBar";
 import { useContext, useState } from "react";
+
 import { User } from "./Context/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Footer from "./Components/Footer";
-import SideBar from "./Components/SideBar";
 import "./Cart.css";
+
+
+import plus from "./assets/Plus.png";
+import minus from "./assets/Minus.png";
+import remove from "./assets/Remove.png";
+import cartIcon from "./assets/FastCart.png";
+
 export default function Cart() {
   const { cart, setCart } = useContext(User);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  function increase(id) {
+    setCart(
+      cart.map((item) =>
+        item.id === id ? { ...item, qty: (item.qty || 1) + 1 } : item
+      )
+    );
+  }
+
+  function decrease(id) {
+    setCart(
+      cart.map((item) =>
+        item.id === id && (item.qty || 1) > 1
+          ? { ...item, qty: item.qty - 1 }
+          : item
+      )
+    );
+  }
+
   function removeFromCart(id) {
     setCart(cart.filter((item) => item.id !== id));
   }
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.price * (item.qty || 1),
+    0
+  );
 
   async function checkInteractions() {
     try {
       setLoading(true);
 
-     
       const ids = cart.map((item) => item.id);
-
-      console.log("IDS SENT:", ids); 
 
       const res = await axios.post(
         "http://127.0.0.1:8000/api/safety-check",
-        {
-          medicine_ids: ids
-        }
+        { medicine_ids: ids }
       );
 
       setLoading(false);
@@ -40,44 +64,74 @@ export default function Cart() {
       } else {
         navigate("/nosafe");
       }
-
     } catch (err) {
       setLoading(false);
-      console.log("API ERROR:", err.response?.data);
       alert("Error checking interactions");
     }
   }
 
   return (
-    <div>
-      <SideBar />
-    
+    <div className="cart-page">
+      <h1 className="title">
+        <img src={cartIcon} alt="" className="title-icon" />
+        Shopping Cart
+      </h1>
 
-      <div className="cart-container">
-        <h1>Your Cart</h1>
+      <p className="subtitle">Review your selected medicines</p>
+
+      <div className="cart-box">
+        <div className="cart-header">
+          {cart.length} Items in your cart
+        </div>
 
         {cart.length === 0 ? (
-          <p>Cart is empty</p>
+          <p className="empty">Cart is empty</p>
         ) : (
           <>
             {cart.map((item) => (
-              <div className="cart-item" key={item.id}>
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>{item.price} S.P</p>
+              <div className="item" key={item.id}>
+                <div className="item-info">
+                  <div className="img"></div>
+
+                  <div>
+                    <h3>{item.name}</h3>
+                    <p>10 Tablets</p>
+                    <span className="stock">in Stock</span>
+                  </div>
                 </div>
 
-                <button onClick={() => removeFromCart(item.id)}>
-                  Remove
+                <div className="price">{item.price} S.P</div>
+
+                {/* qty */}
+                <div className="qty">
+                  <button onClick={() => decrease(item.id)}>
+                    <img src={minus} alt="" />
+                  </button>
+
+                  <span>{item.qty || 1}</span>
+
+                  <button onClick={() => increase(item.id)}>
+                    <img src={plus} alt="" />
+                  </button>
+                </div>
+
+                
+                <button
+                  className="remove"
+                  onClick={() => removeFromCart(item.id)}
+                >
+                  <img src={remove} alt="" />
                 </button>
               </div>
             ))}
 
-            <h2>Total: {totalPrice} S.P</h2>
+            <div className="footer">
+              <h2>Total: {totalPrice} S.P</h2>
 
-            <button onClick={checkInteractions} disabled={loading}>
-              {loading ? "Checking..." : "Check Interactions"}
-            </button>
+              <button className="check" onClick={checkInteractions}>
+                {loading ? "Checking..." : "Check Interactions"}
+              </button>
+            </div>
           </>
         )}
       </div>

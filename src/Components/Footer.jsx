@@ -1,4 +1,5 @@
 
+
 export default function Footer() {
   
 
@@ -7,9 +8,9 @@ export default function Footer() {
       
   position: "fixed",
   bottom: 0,
-  left: 0,
+  left: "95px",
   width: "calc(100% - 95px)",
-  background: "#e4f0fe",
+  background: "#f1f3fa",
   color: "#4a5a80",
   textAlign:" center",
   padding:" 12px 0",
@@ -21,4 +22,5 @@ export default function Footer() {
       <p>© 2026 MedNest — All Rights Reserved</p>
     </footer>
   );
+
 }

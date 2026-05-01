@@ -54,71 +54,7 @@
   transform: scale(1.1);
 }
 
-/* 
- .Header {
- 
-  padding: 30px;
-  color: rgb(2, 37, 107);
-  width: 100%;
- 
-  top: 9px;
-  left: 96px;
-  height: 130px;
-  
-   background-color: #d8e4f0;
-   
-}
 
-.header-top {
-  display: flex;
-  align-items: left;
-  justify-content: flex-start;
-  gap: 20px;
- 
-}
-
-.Header .icon {
-  font-size: 45px;
-  background-color: #061e65;
-}
-
-.title-text h1 {
-  font-size: 36px;
-  font-weight: 600;
-  background-color: #d8e4f0 ;
-}
-
-.title-text h4 {
-  font-size: 22px;
-  opacity: 0.9;
-  margin-top: 3px;
-}
-.ask-text{
- font-size: 22px;
-margin-top:4px;
-  display: flex;
-  align-items: left;
-  
-
-}
-
-
- input {
- width:320px;
-  padding:10px 12px;
-  border-radius:19px ;
-  font-size: 14px;
-  outline:none;
-} 
-
-.ask-row{
-  display: flex;
-align-items: center;
-gap:12px;
-margin-top: 12px;}
-  */
-
-/* ================= HEADER ================= */
 .Header {
   position: fixed;
   top: 0;
@@ -134,7 +70,7 @@ margin-top: 12px;}
   z-index: 1000;
 }
 
-/* TOP */
+
 .header-top {
   display: flex;
   align-items: center;
@@ -159,22 +95,22 @@ margin-top: 12px;}
   font-weight: normal;
 }
 
-/* ================= BOTTOM ================= */
+
 .ask-search-row {
   display: flex;
-  align-items: center;   /* 🔥 يخليهم بنفس المستوى */
+  align-items: center;   
   justify-content: flex-start;
   gap: 15px;
-  margin-top: 0px;       /* 🔥 رفعهم لفوق */
+  margin-top: 0px;      
 }
 
-/* question text */
+
 .ask-text {
   font-size: 16px;
   font-weight: 500;
   color: #1b3b6f;
   white-space: nowrap;
-  margin-top: 0;         /* 🔥 مهم */
+  margin-top: 0;        
 }
 
 
