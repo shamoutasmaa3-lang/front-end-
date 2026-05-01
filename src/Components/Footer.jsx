@@ -7,9 +7,9 @@ export default function Footer() {
       
   position: "fixed",
   bottom: 0,
-  left: "95px",
+  left: 0,
   width: "calc(100% - 95px)",
-  background: "#f1f3fa",
+  background: "#e4f0fe",
   color: "#4a5a80",
   textAlign:" center",
   padding:" 12px 0",

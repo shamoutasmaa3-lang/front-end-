@@ -6,7 +6,7 @@ import "./signup.css";
 import { User } from "./Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-
+import Footer from "./Components/Footer";
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -104,16 +104,17 @@ export default function SignUp() {
            
             <div style={{ textAlign: "center"  }}>
               <button type="submit">Register</button>
-            </div>
+            
              <div>
             Already have  an account?
             <Link to="/" className="link">
             Log in
             </Link>
-          </div>
+          </div></div>
           </form>
        
       </div>
+      <Footer/>
     </div>
   );
 }
