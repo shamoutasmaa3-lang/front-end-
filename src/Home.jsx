@@ -21,7 +21,7 @@ export default function Home() {
       <SideBar />
 
       <div className="main">
-        <Headers />
+        <Header />
 
         <h2 className="section-title">Categories</h2>
 
