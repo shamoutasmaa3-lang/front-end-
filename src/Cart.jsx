@@ -64,7 +64,7 @@ export default function Cart() {
       } else {
         navigate("/nosafe");
       }
-    } catch (err) {
+    } catch (er) {
       setLoading(false);
       alert("Error checking interactions");
     }
@@ -73,15 +73,16 @@ export default function Cart() {
   return (
     <div className="cart-page">
       <h1 className="title">
-        <img src={cartIcon} alt="" className="title-icon" />
+        
         Shopping Cart
       </h1>
 
-      <p className="subtitle">Review your selected medicines</p>
+      <h4 className="subtitle">Review your selected medicines</h4>
 
       <div className="cart-box">
         <div className="cart-header">
-          {cart.length} Items in your cart
+          <img src={cartIcon} alt="" className="title-icon" />
+            <span>{cart.length} Items in your cart</span> 
         </div>
 
         {cart.length === 0 ? (
@@ -91,24 +92,27 @@ export default function Cart() {
             {cart.map((item) => (
               <div className="item" key={item.id}>
                 <div className="item-info">
-                  <div className="img"></div>
+                  <div className="img">
+
+                    <img src={item.img} alt={item.name} />
+                  </div>
 
                   <div>
                     <h3>{item.name}</h3>
                     <p>10 Tablets</p>
-                    <span className="stock">in Stock</span>
+                    <div className="stock">in Stock</div>
                   </div>
                 </div>
 
                 <div className="price">{item.price} S.P</div>
 
-                {/* qty */}
+              
                 <div className="qty">
                   <button onClick={() => decrease(item.id)}>
                     <img src={minus} alt="" />
                   </button>
 
-                  <span>{item.qty || 1}</span>
+                  <span style={{fontSize:"23px"}}>{item.qty || 1}</span>
 
                   <button onClick={() => increase(item.id)}>
                     <img src={plus} alt="" />
