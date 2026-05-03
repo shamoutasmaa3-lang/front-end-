@@ -1,4 +1,4 @@
-import SideBar from "./components/SideBar";
+import SideBar from "./Components/SideBar";
 import { useContext, useState } from "react";
 
 import { User } from "./Context/UserContext";
@@ -64,10 +64,15 @@ export default function Cart() {
       } else {
         navigate("/nosafe");
       }
-    } catch (er) {
-      setLoading(false);
-      alert("Error checking interactions");
     }
+     catch (error) {
+      console.log(error);
+      setLoading(false);
+      
+      alert("Error checking interactions");
+      
+    }
+   
   }
 
   return (
