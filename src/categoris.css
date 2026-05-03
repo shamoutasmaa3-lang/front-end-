@@ -5,7 +5,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 35px;
-  background-color: #dee6f4;
+  
 }
 
 .product {
@@ -36,14 +36,14 @@
   color: #233a78;
   font-size: 21px;
   margin-bottom: 8px;
-  background-color: #e0e4f1;
+  
 }
 
 .info p {
   color: #444;
   font-size: 22px;
   margin-bottom: 6px;
-  background-color: #e0e4f1;
+  
 }
 p strong {
   background-color: #d4dff2;
