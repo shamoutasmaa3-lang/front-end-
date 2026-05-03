@@ -100,7 +100,7 @@ export default function Login() {
           <div className="remember-forget">
             <div className="checkbox">
               <input type="checkbox" id="checkbox" />
-              <label htmlFor="checkbox">RememberMe</label>
+              <label htmlFor="checkbox">Remamber Me</label>
             </div>
 
             <Link to="/forget-password" className="forget-link">
