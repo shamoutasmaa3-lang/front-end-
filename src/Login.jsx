@@ -31,8 +31,10 @@ export default function Login() {
       });
 
       if (res.status === 200 && res.data.token) {
-        const token = res.data.token;
+        const token = res.data.token||res.data.data?.token;
+        if(token){
         cookie.set("Bearer", token, { path: "/" });
+      console.log("token:",token)};
         const userDetails = res.data.data?.user || res.data.user;
         setAuth({ token, userDetails });
 
