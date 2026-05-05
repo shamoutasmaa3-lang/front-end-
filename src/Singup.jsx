@@ -15,13 +15,13 @@ export default function SignUp() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [address, setAddress] = useState("");
 
-  const [emailError, setEmailError] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [accept, setAccept] = useState(false);
   const cookie = new Cookies();
   const nav = useNavigate();
 
   const user = useContext(User);
-  console.log(user);
+ 
   async function submit(e) {
     e.preventDefault();
     setAccept(true);
@@ -31,7 +31,7 @@ export default function SignUp() {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
-        addresss: address,
+        address: address,
       });
       const token = res.data.token;
       const userDetails = res.data.user;
@@ -39,8 +39,9 @@ export default function SignUp() {
       user.setAuth({ token, userDetails });
       nav("/home");
     } catch (err) {
-      if (err.response.status === 422 || err.response.status === 401) {
+      if (err.response?.status === 422 || err.response?.status === 401) {
         setEmailError(true);
+      
       }
       setAccept(true);
     }
@@ -78,7 +79,7 @@ export default function SignUp() {
               placeholder=" Enter your address."
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-            />{" "}
+            />
             {accept && address.length < 12 && (
               <p> address must be more than 12 char </p>
             )}
