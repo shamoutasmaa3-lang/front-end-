@@ -86,6 +86,28 @@ input {
 
 }
 
+/* ================= ROLE SELECT ================= */
+
+select {
+  width: 65%;
+  padding: 15px;
+  border: 1.5px solid hwb(204 28% 16%);
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  background-color: hwb(200 93% 6%);
+  color: #1b3b6f;
+  cursor: pointer;
+}
+
+select:focus {
+  background: #fff;
+}
+
+select option {
+  color: #1b3b6f;
+}
+
 
 input:focus {
 

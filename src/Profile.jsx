@@ -1,7 +1,8 @@
 import "./Profile.css";
 import SideBar from "./components/SideBar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "./Context/UserContext";
 
 import profileIcon from "./assets/Profile.png";
 import nameIcon from "./assets/Name.png";
@@ -11,30 +12,32 @@ import logoutIcon from "./assets/Logout.png";
 import calendarIcon from "./assets/Calendar.png";
 import phoneIcon from "./assets/Phone.png";
 import doorbellIcon from "./assets/Doorbell.png";
-import backIcon from "./assets/Back.png";
 
 export default function Profile() {
-
+  const { user: contextUser } = useContext(User);
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(contextUser || null);
   const [loading, setLoading] = useState(true);
 
-  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
 
-  
   const [reminders, setReminders] = useState(true);
   const [promotions, setPromotions] = useState(false);
   const [tips, setTips] = useState(true);
 
-  
-  const role = user && user.role;
+  const role = (user && user.role) || "patient";
 
-  
+  const roleLabel =
+    role === "doctor"
+      ? "Doctor"
+      : role === "pharmacist"
+      ? "Pharmacist"
+      : "Patient";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -51,7 +54,7 @@ export default function Profile() {
         setName(data.name || "");
         setEmail(data.email || "");
         setPhone(data.phone || "");
-        setBirth(data.birth || "");
+        setBirth(data.birth ? data.birth.split("T")[0] : "");
 
         setLoading(false);
       })
@@ -61,7 +64,6 @@ export default function Profile() {
       });
   }, []);
 
-  
   const handleSave = async () => {
     const token = localStorage.getItem("token");
 
@@ -76,13 +78,15 @@ export default function Profile() {
         email,
         phone,
         birth,
+        reminders,
+        promotions,
+        tips,
       }),
     });
 
     alert("Profile updated!");
   };
 
-  
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
 
@@ -96,7 +100,6 @@ export default function Profile() {
 
       localStorage.removeItem("token");
       navigate("/");
-
     } catch (error) {
       console.error(error);
       localStorage.removeItem("token");
@@ -110,11 +113,9 @@ export default function Profile() {
 
   return (
     <div className="layout">
-
       <SideBar />
 
       <div className="profile-page">
-
         <h1>My Profile</h1>
         <p className="subtitle">
           Manage your account information and settings
@@ -122,25 +123,18 @@ export default function Profile() {
 
         <div className="profile-grid">
 
-         
+          {/* LEFT CARD */}
           <div className="card profile-card">
             <img src={profileIcon} alt="profile" className="avatar" />
 
             <h2>{name}</h2>
             <p className="email">{email}</p>
 
-            <span className="role">
-              {role === "doctor"
-                ? "Doctor"
-                : role === "pharmacist"
-                ? "Pharmacist"
-                : "Patient"}
-            </span>
+            <span className="role">{roleLabel}</span>
 
             <hr />
 
             <div className="info-list">
-
               <div className="info-item">
                 <img src={phoneIcon} alt="" />
                 <span>{phone || "+963 xxx xxx xxx"}</span>
@@ -148,22 +142,23 @@ export default function Profile() {
 
               <div className="info-item">
                 <img src={calendarIcon} alt="" />
-                <span>Joined {user && user.createdAt ? user.createdAt : "May 10, 2026"}</span>
+                <span>
+                  Joined{" "}
+                  {user && user.createdAt
+                    ? new Date(user.createdAt).toLocaleDateString()
+                    : "Unknown"}
+                </span>
               </div>
 
               <div className="info-item">
                 <img src={securityIcon} alt="" />
-                <span>Patient Account</span>
+                <span>{roleLabel} Account</span>
               </div>
-
             </div>
-
-            <button className="edit-btn">Edit Profile</button>
           </div>
 
-          
+          {/* MIDDLE CARD */}
           <div className="card">
-
             <div className="card-title">
               <img src={nameIcon} alt="" />
               <h3>Personal Information</h3>
@@ -192,25 +187,16 @@ export default function Profile() {
             <button className="save-btn" onClick={handleSave}>
               Save Changes
             </button>
-
           </div>
 
-         
+          {/* RIGHT CARD */}
           <div className="right-column">
 
             <div className="card small">
               <h3>
                 <img src={shieldIcon} alt="" /> Account Security
               </h3>
-
-              <div className="row">
-                <div>
-                  <h4>Change Password</h4>
-                  <p>Update your password</p>
-                </div>
-
-                <img src={backIcon} alt="" className="arrow" />
-              </div>
+              <p>Change password</p>
             </div>
 
             <div className="card small">
@@ -232,14 +218,12 @@ export default function Profile() {
                 <span>Health Tips</span>
                 <div className={`toggle ${tips ? "active" : ""}`}></div>
               </div>
-
             </div>
 
           </div>
-
         </div>
 
-        
+        {/* LOGOUT */}
         <div className="logout" onClick={handleLogout}>
           <img src={logoutIcon} alt="" />
           <div>
