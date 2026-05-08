@@ -8,6 +8,9 @@ import Safe from "./Safe";
 import NoSafe from "./NoSafe";
 import Prescription from "./Prescription";
 import SignUp from "./Singup";
+import Inventory from "./Inventory";
+import PharmacistChat from "./PharmacistChat";
+
 export default function App() {
   return (
     <>
@@ -22,6 +25,8 @@ export default function App() {
         <Route path="/safe" element={<Safe />} />
         <Route path="/upload" element={<Prescription />} />
         <Route path="/nosafe" element={<NoSafe />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/pharmacistChat" element={<PharmacistChat />} />
       </Routes>
     </>
   );
