@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
-import { User } from "./Context/UserContext";
 import "./Profile.css";
-import SideBar from "./Components/SideBar";
-
+import SideBar from "./components/SideBar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import profileIcon from "./assets/Profile.png";
 import nameIcon from "./assets/Name.png";
@@ -15,90 +14,190 @@ import doorbellIcon from "./assets/Doorbell.png";
 import backIcon from "./assets/Back.png";
 
 export default function Profile() {
-  const { user } = useContext(User);
 
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
 
-  function saveData() {
-    console.log({ phone, birth });
+  
+  const [reminders, setReminders] = useState(true);
+  const [promotions, setPromotions] = useState(false);
+  const [tips, setTips] = useState(true);
+
+  
+  const role = user && user.role;
+
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch("/api/user", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+
+        setName(data.name || "");
+        setEmail(data.email || "");
+        setPhone(data.phone || "");
+        setBirth(data.birth || "");
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  
+  const handleSave = async () => {
+    const token = localStorage.getItem("token");
+
+    await fetch("/api/user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        birth,
+      }),
+    });
+
+    alert("Profile updated!");
+  };
+
+  
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      localStorage.removeItem("token");
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+      localStorage.removeItem("token");
+      navigate("/");
+    }
+  };
+
+  if (loading) {
+    return <div style={{ padding: "30px" }}>Loading profile...</div>;
   }
 
   return (
     <div className="layout">
+
       <SideBar />
 
       <div className="profile-page">
+
         <h1>My Profile</h1>
         <p className="subtitle">
-          Manage your account information and setting
+          Manage your account information and settings
         </p>
 
         <div className="profile-grid">
 
-          
+         
           <div className="card profile-card">
-            <div className="avatar"></div>
+            <img src={profileIcon} alt="profile" className="avatar" />
 
-            <h2>{user?.name || "User Name"}</h2>
-            <p className="email">{user?.email || "email@gmail.com"}</p>
+            <h2>{name}</h2>
+            <p className="email">{email}</p>
 
-            <span className="role">Patient</span>
+            <span className="role">
+              {role === "doctor"
+                ? "Doctor"
+                : role === "pharmacist"
+                ? "Pharmacist"
+                : "Patient"}
+            </span>
 
             <hr />
 
-            <p>
-              <img src={phoneIcon} alt="" /> +963 xxx xxx xxx
-            </p>
+            <div className="info-list">
 
-            <p>
-              <img src={calendarIcon} alt="" /> joined on May 10,2026
-            </p>
+              <div className="info-item">
+                <img src={phoneIcon} alt="" />
+                <span>{phone || "+963 xxx xxx xxx"}</span>
+              </div>
 
-            <p>
-              <img src={securityIcon} alt="" /> Patient account
-            </p>
+              <div className="info-item">
+                <img src={calendarIcon} alt="" />
+                <span>Joined {user && user.createdAt ? user.createdAt : "May 10, 2026"}</span>
+              </div>
 
-            <button className="edit-btn">
-              Edit Profile
-            </button>
+              <div className="info-item">
+                <img src={securityIcon} alt="" />
+                <span>Patient Account</span>
+              </div>
+
+            </div>
+
+            <button className="edit-btn">Edit Profile</button>
           </div>
 
           
           <div className="card">
-            <h3>
-              <img src={nameIcon} alt="" /> Personal Information
-            </h3>
 
-            <label>Full Name</label>
-            <input value={user?.name || ""} readOnly />
+            <div className="card-title">
+              <img src={nameIcon} alt="" />
+              <h3>Personal Information</h3>
+            </div>
 
-            <label>Email Address</label>
-            <input value={user?.email || ""} readOnly />
+            <div className="form-group">
+              <label>Full Name</label>
+              <input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
 
-            <label>Phone Number</label>
-            <input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+963 xxx xxx xxx"
-            />
+            <div className="form-group">
+              <label>Email Address</label>
+              <input value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
 
-            <label>Date Of Birth</label>
-            <input
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
-              placeholder="5/7/1999"
-            />
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </div>
 
-            <button className="save-btn" onClick={saveData}>
-              save change
+            <div className="form-group">
+              <label>Date Of Birth</label>
+              <input value={birth} onChange={(e) => setBirth(e.target.value)} />
+            </div>
+
+            <button className="save-btn" onClick={handleSave}>
+              Save Changes
             </button>
+
           </div>
 
-          
+         
           <div className="right-column">
 
-           
             <div className="card small">
               <h3>
                 <img src={shieldIcon} alt="" /> Account Security
@@ -114,39 +213,41 @@ export default function Profile() {
               </div>
             </div>
 
-            
             <div className="card small">
               <h3>
-                <img src={doorbellIcon} alt="" /> Notification setting
+                <img src={doorbellIcon} alt="" /> Notifications
               </h3>
 
-              <div className="toggle-row">
-                <span>Notification Reminders</span>
-                <div className="toggle active"></div>
+              <div className="toggle-row" onClick={() => setReminders(!reminders)}>
+                <span>Reminders</span>
+                <div className={`toggle ${reminders ? "active" : ""}`}></div>
               </div>
 
-              <div className="toggle-row">
-                <span>Promotions & Offers</span>
-                <div className="toggle"></div>
+              <div className="toggle-row" onClick={() => setPromotions(!promotions)}>
+                <span>Promotions</span>
+                <div className={`toggle ${promotions ? "active" : ""}`}></div>
               </div>
 
-              <div className="toggle-row">
-                <span>Health Tips & News</span>
-                <div className="toggle active"></div>
+              <div className="toggle-row" onClick={() => setTips(!tips)}>
+                <span>Health Tips</span>
+                <div className={`toggle ${tips ? "active" : ""}`}></div>
               </div>
+
             </div>
+
           </div>
 
         </div>
 
         
-        <div className="logout">
+        <div className="logout" onClick={handleLogout}>
           <img src={logoutIcon} alt="" />
           <div>
             <h3>Log Out</h3>
-            <p>sign out from your account</p>
+            <p>Sign out from your account</p>
           </div>
         </div>
+
       </div>
     </div>
   );
