@@ -56,8 +56,6 @@
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
-
-/* statuses */
 .status {
   padding: 4px 8px;
   border-radius: 6px;
@@ -88,8 +86,14 @@
   border: none;
 }
 
-.btn.edit { background: #007bff; color: white; }
-.btn.delete { background: #d60000; color: white; }
+.btn.edit {
+  background: #007bff;
+  color: white;
+}
+.btn.delete {
+  background: #d60000;
+  color: white;
+}
 
 .loading {
   text-align: center;

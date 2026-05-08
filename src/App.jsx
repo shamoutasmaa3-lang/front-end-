@@ -1,3 +1,4 @@
+
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
  import Home from "./Home";
@@ -10,7 +11,7 @@ import Prescription from "./Prescription";
 import SignUp from "./Singup";
 import Inventory from "./Inventory";
 import PharmacistChat from "./PharmacistChat";
-
+import Notification from "./Notification";
 export default function App() {
   return (
     <>
@@ -27,6 +28,8 @@ export default function App() {
         <Route path="/nosafe" element={<NoSafe />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/pharmacistChat" element={<PharmacistChat />} />
+        <Route path="/notifaction" element={<Notification />} />
+
       </Routes>
     </>
   );

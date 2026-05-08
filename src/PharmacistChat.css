@@ -5,12 +5,10 @@
   font-family: "Poppins", sans-serif;
 }
 
-
-
 .chat-page {
   padding: 30px;
-  margin-left: 100px;  
-  padding-top: 20px;  
+  margin-left: 100px;
+  padding-top: 20px;
   height: 100vh;
   background: #eef3fb;
 
@@ -19,15 +17,12 @@
 }
 
 .chat-header h1 {
-  color: #1B3C74;
-  
+  color: #1b3c74;
 }
-.chat-header p{
-  color: #1B3C74;
+.chat-header p {
+  color: #1b3c74;
   margin-bottom: 20px;
 }
-
-
 
 .chat-container {
   flex: 1;
@@ -40,8 +35,6 @@
 
   height: calc(100vh - 160px);
 }
-
-
 
 .pharmacist-info {
   margin: 20px;
@@ -81,8 +74,6 @@
   border-radius: 50%;
 }
 
-
-
 .messages-container {
   flex: 1;
   overflow-y: auto;
@@ -102,8 +93,6 @@
   border-radius: 20px;
 }
 
-
-
 .message-row {
   display: flex;
 }
@@ -115,8 +104,6 @@
 .pharmacist-row {
   justify-content: flex-start;
 }
-
-
 
 .message-bubble {
   max-width: 60%;
@@ -148,7 +135,6 @@
   text-align: right;
 }
 
-
 .chat-input-container {
   display: flex;
   align-items: center;
@@ -173,7 +159,7 @@
   width: 65px;
   height: 65px;
   border: none;
-  background: transparent; 
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,12 +176,9 @@
   transform: scale(1.05);
 }
 
-
-
 @media (max-width: 768px) {
-
   .chat-page {
-    margin-left: 100px; 
+    margin-left: 100px;
     padding-top: 130px;
   }
 
