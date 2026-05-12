@@ -16,11 +16,12 @@
   background-color: #e4f0fe;
   padding: 0;
   overflow: hidden; 
+
 }
 
 .image-sectionsignup img {
 
-  max-width: 110%;
+    max-width: 200%;
   height: auto;
     width: 100%;
  
@@ -68,7 +69,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.3rem;
+  gap: 1.5rem;
   width: 100%;
 }
 
@@ -81,12 +82,11 @@ input {
   font-size: 16px;
   outline: none;
   background-color: hwb(200 93% 6%);
- 
+
   border-radius: 10px;
 
 }
 
-/* ================= ROLE SELECT ================= */
 
 select {
   width: 65%;
@@ -116,14 +116,18 @@ input:focus {
 
 
 input::placeholder {
-  color: #8994a7;
+  color: #8491a7;
 }
 
 
 .error {
   color: #dc2626;
-  font-size: 0.75rem;
-  margin-top: -0.75rem;
+  font-size: 14px;
+  margin-top:4px;
+  
+ 
+  
+  
 }
 
 
@@ -134,10 +138,10 @@ button[type="submit"] {
   border: none;
   border-radius: 8px;
   font-size: 25px;
- width: 100%;
+ width: 65%;
  
   margin-top: 2px;
-  margin-bottom:10px;
+  
   
 }
 

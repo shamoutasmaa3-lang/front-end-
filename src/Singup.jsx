@@ -1,210 +1,135 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
-import logo from "./assets/smart.jpeg";
-import "./signup.css";
-import { User } from "./Context/UserContext";
-import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import Footer from "./Components/Footer";
-
+import { Link, useNavigate } from "react-router-dom";
+import logo from "./assets/smart.jpeg"; 
+import Footer from "./components/Footer";
+import "./signup.css";
 export default function SignUp() {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [address, setAddress] = useState("");
-
-  // ✅ ROLE
   const [role, setRole] = useState("patient");
 
-  const [emailError, setEmailError] = useState(false);
   const [accept, setAccept] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
   const cookie = new Cookies();
-  
   const nav = useNavigate();
-
-  const user = useContext(User);
-
+console.log(accept);
   async function submit(e) {
-
     e.preventDefault();
     setAccept(true);
+    setEmailError("");
 
     try {
-
-      let res = await axios.post(
+      const res = await axios.post(
         "http://127.0.0.1:8000/api/register",
         {
-          name: name,
-          email: email,
-          password: password,
+          name,
+          email,
+          password,
           password_confirmation: passwordConfirmation,
-          address: address,
-
-          // ✅ SEND ROLE
-          role: role,
+          address,
+          role,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+          },
         }
       );
 
+      console.log(res.data);
+
+    
       const token = res.data.token;
-      const userDetails = res.data.user;
 
-      cookie.set("Bearer", token);
-      localStorage.setItem("token", token);
+      if (!token) {
+        setEmailError("Server error: token not found");
+        return;
+      }
 
-      user.setAuth({
-        token,
-        userDetails,
-      });
+      cookie.set("token", token, { path: "/" });
+      cookie.set("role", res.data.role || role, { path: "/" });
 
       nav("/home");
 
     } catch (err) {
-
-      if (
-        err.response &&
-(
-  err.response.status === 422 ||
-  err.response.status === 401
-)
-      ) {
-        setEmailError(true);
-      }
-
-      setAccept(true);
+      console.log(err.response?.data);
     }
   }
 
   return (
-
     <div className="signup-container">
-
       <div className="image-sectionsignup">
         <img src={logo} alt="logo" />
       </div>
 
       <div className="forms">
-
         <h1>Create Account</h1>
 
-        <h3>Sign up to get started</h3>
-
         <form onSubmit={submit}>
-
-          {/* NAME */}
           <input
             type="text"
-            id="name"
-            placeholder="Enter your name."
-            required
+            placeholder="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
-          {/* EMAIL */}
           <input
             type="email"
-            id="email"
-            placeholder="Enter your email."
-            required
+            placeholder="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          {accept && emailError && (
-            <p className="error">
-              Email is already taken
-            </p>
-          )}
-
-          {/* ADDRESS */}
           <input
             type="text"
-            id="address"
-            placeholder="Enter your address."
+            placeholder="address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {accept && address.length < 12 && (
-            <p className="error">
-              Address must be more than 12 characters
-            </p>
-          )}
-
-          {/* ROLE */}
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="patient">Patient</option>
-
             <option value="doctor">Doctor</option>
-
-            <option value="pharmacist">
-              Pharmacist
-            </option>
+            <option value="pharmacist">Pharmacist</option>
           </select>
 
-          {/* PASSWORD */}
           <input
             type="password"
-            id="password"
-            placeholder="Enter your password."
+            placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
+          />  {password.length<8&&accept &&(<p className ="error">
+              password must be more than 8 char
+            </p>)
 
-          {password.length < 8 && accept && (
-            <p className="error">
-              Password must be more than 8 characters
-            </p>
-          )}
+            }
 
-          {/* CONFIRM PASSWORD */}
           <input
             type="password"
-            id="passwordcon"
-            placeholder="Confirm your password."
+            placeholder="confirm password"
             value={passwordConfirmation}
-            onChange={(e) =>
-              setPasswordConfirmation(e.target.value)
-            }
-          />
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+          />  {passwordConfirmation!== password&&accept&&(
+              <p className="error"> password dose not match</p>
+            )}
 
-          {passwordConfirmation !== password && accept && (
-            <p className="error">
-              Password does not match
-            </p>
-          )}
+          <button type="submit">Register</button>
 
-          <div style={{ textAlign: "center" }}>
+          {emailError && <p className="error">{emailError}</p>}
 
-            <button type="submit">
-              Register
-            </button>
-
-            <div>
-
-              Already have an account?
-
-              <Link to="/" className="link">
-                Log in
-              </Link>
-
-            </div>
-
+          <div >
+            Already have account? <Link to="/">Login</Link>
           </div>
-
         </form>
-
       </div>
 
       <Footer />
-
     </div>
   );
 }
