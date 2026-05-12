@@ -1,19 +1,7 @@
-// import { useState } from "react";
-// import { User } from "./UserContext";
 
-// export default function UserProvider({ children }) {
-//   const [auth, setAuth] = useState(null);
-//   const[cart,setCart]=useState([]);
-
-//   return (
-//     <User.Provider value={{ auth, setAuth,cart,setCart }}>
-//       {children}
-//     </User.Provider>
-//   );
-// }
-import { useState } from "react";
-import { User } from "./UserContext";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
+import {User} from "./UserContext";
 
 export default function UserProvider({ children }) {
   const cookie = new Cookies();
@@ -23,7 +11,20 @@ export default function UserProvider({ children }) {
     user: null,
   });
 
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+  });
+
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(() => {
+    if (auth?.token) {
+      cookie.set("token", auth.token, { path: "/" });
+    }
+  }, [auth?.token]);
 
   return (
     <User.Provider value={{ auth, setAuth, cart, setCart }}>
