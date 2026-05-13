@@ -31,9 +31,9 @@ export default function App() {
       <Route
         path="/home"
         element={
-          <RoleRoute allowedRoles={["patient"]}>
+         // <RoleRoute allowedRoles={["patient"]}>
             <Home />
-          </RoleRoute>
+         // </RoleRoute>
         }
       />
 
