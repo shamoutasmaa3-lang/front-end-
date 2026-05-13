@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import "./inventory.css";
+import SideBar from "./components/SideBar";
 
 export default function Inventory() {
   const [total, setTotal] = useState();
@@ -36,10 +37,12 @@ export default function Inventory() {
   }, []);
 
   return (
+    <><SideBar/>
     <div className="inventory-container">
+      
       <div className="header">
         <h1>Inventory Management</h1>
-        <p>Track stock levels and expiry dates</p>
+        <h4>Track stock levels and expiry dates</h4>
       </div>
 
       <div className="stats">
@@ -106,6 +109,6 @@ export default function Inventory() {
           ))}
         </tbody>
       </table>
-    </div>
+    </div></>
   );
 }
