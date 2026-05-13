@@ -40,9 +40,9 @@ export default function App() {
       <Route
         path="/categories"
         element={
-          //<RoleRoute allowedRoles={["patient"]}>
+          <RoleRoute allowedRoles={["patient"]}>
             <Categories />
-          //</RoleRoute>
+          </RoleRoute>
         }
       />
 
