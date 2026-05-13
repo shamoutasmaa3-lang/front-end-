@@ -23,7 +23,7 @@ import MyOrders from "./MyOrders";
 export default function App() {
   return (
     <Routes>
-      {/* LOGIN */}
+      
       <Route path="/" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
 
@@ -40,9 +40,9 @@ export default function App() {
       <Route
         path="/categories"
         element={
-          <RoleRoute allowedRoles={["patient"]}>
+          //<RoleRoute allowedRoles={["patient"]}>
             <Categories />
-          </RoleRoute>
+          //</RoleRoute>
         }
       />
 
