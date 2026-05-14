@@ -1,15 +1,18 @@
 .inventory-container {
   padding: 20px;
   font-family: sans-serif;
+  margin: 10px 100px;
 }
 
 .header h1 {
-  font-size: 28px;
+  font-size: 35px;
   margin-bottom: 5px;
+   color: rgb(3, 29, 113);
 }
 
-.header p {
-  color: gray;
+.header h4 {
+    font-size: 20px;
+  color: rgb(3, 29, 113);
   margin-bottom: 25px;
 }
 

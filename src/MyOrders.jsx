@@ -35,7 +35,7 @@ export default function MyOrders() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>📦 My Orders</h2>
+      <h2> My Orders</h2>
 
       {orders.length === 0 ? (
         <p>No orders yet</p>
